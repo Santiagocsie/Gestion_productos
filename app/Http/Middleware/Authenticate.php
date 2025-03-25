@@ -18,4 +18,10 @@ class Authenticate extends Middleware
             return route('login');
         }
     }
+
+    protected function guard()
+{
+    return Auth::guard(session('guard', 'empleado')); // Tomar guard desde la sesión
+}
+
 }

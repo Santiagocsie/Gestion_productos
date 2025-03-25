@@ -17,14 +17,17 @@ class EmpleadoController extends Controller
         $request->validate([
             'Nombre' => 'required|string|max:100',
             'Correo' => 'required|email|unique:empleados',
-            'Contraseña' => 'required|string|min:6',
+            'Contrasena' => 'required|string|min:6',
             'Telefono' => 'nullable|string|max:20',
             'Direccion' => 'nullable|string',
             'Fecha_nacimiento' => 'required|date',
             'Genero' => 'required|in:M,F',
         ]);
 
-        $empleado = Empleado::create($request->all());
+        $empleadoData = $request->all();
+        $empleadoData['Contrasena'] = bcrypt($empleadoData['Contrasena']);
+
+        $empleado = Empleado::create($empleadoData);
         return $empleado;
     }
 
@@ -36,7 +39,26 @@ class EmpleadoController extends Controller
     public function update(Request $request, $id)
     {
         $empleado = Empleado::findOrFail($id);
-        $empleado->update($request->all());
+
+        $request->validate([
+            'Nombre' => 'sometimes|string|max:100',
+            'Correo' => 'sometimes|email|unique:empleados,Correo,' . $id,
+            'Contrasena' => 'sometimes|string|min:6',
+            'Telefono' => 'nullable|string|max:20',
+            'Direccion' => 'nullable|string',
+            'Fecha_nacimiento' => 'sometimes|date',
+            'Genero' => 'sometimes|in:M,F',
+        ]);
+
+        $empleadoData = $request->all();
+
+        if (!empty($empleadoData['Contrasena'])) {
+            $empleadoData['Contrasena'] = bcrypt($empleadoData['Contrasena']);
+        } else {
+            unset($empleadoData['Contrasena']);
+        }
+
+        $empleado->update($empleadoData);
         return $empleado;
     }
 
