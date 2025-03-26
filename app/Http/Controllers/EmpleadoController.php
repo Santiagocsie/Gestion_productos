@@ -42,7 +42,7 @@ class EmpleadoController extends Controller
 
         $request->validate([
             'Nombre' => 'sometimes|string|max:100',
-            'Correo' => 'sometimes|email|unique:empleados,Correo,' . $id,
+            'Email' => 'sometimes|email|unique:empleados,Email,' . $id,
             'Contrasena' => 'sometimes|string|min:6',
             'Telefono' => 'nullable|string|max:20',
             'Direccion' => 'nullable|string',
