@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Producto;
 use Illuminate\Http\Request;
+use App\Models\DetalleProducto;
+
 
 class ProductoController extends Controller
 {
@@ -18,15 +20,25 @@ class ProductoController extends Controller
         return view('admin.productos', compact('productos'));
     }
 
+    public function gerenteIndex()
+    {
+        $productos = Producto::all();
+        return view('gerente.index', compact('productos'));
+    }
+
     public function store(Request $request)
     {
         $request->validate([
-            'Codigo_prod' => 'required|string|max:100|unique:productos',
+            'Codigo_prod' => 'required|string|max:100|unique:producto',
             'Nombre' => 'required|string|max:100',
+            'Estado' => 'required|in:Agotado,Disponible',
+            'Precio' => 'required|numeric|min:0',
+            'stock' => 'required|integer|min:0',
+            'Descripcion' => 'nullable|string',
         ]);
-
+    
         Producto::create($request->all());
-
+    
         return redirect()->route('admin.productos')->with('success', 'Producto creado correctamente.');
     }
 
@@ -36,12 +48,21 @@ class ProductoController extends Controller
     }
 
     public function update(Request $request, $id)
-    {
-        $producto = Producto::findOrFail($id);
-        $producto->update($request->all());
+{
+    $producto = Producto::findOrFail($id);
 
-        return redirect()->route('admin.productos')->with('success', 'Producto actualizado correctamente.');
-    }
+    $request->validate([
+        'Nombre' => 'required|string|max:100',
+        'Estado' => 'required|in:Agotado,Disponible',
+        'Precio' => 'required|numeric|min:0',
+        'stock' => 'required|integer|min:0',
+        'Descripción' => 'nullable|string',
+    ]);
+
+    $producto->update($request->all());
+
+    return redirect()->route('admin.productos')->with('success', 'Producto actualizado correctamente.');
+}
 
     public function destroy($id)
     {
@@ -49,4 +70,14 @@ class ProductoController extends Controller
 
         return redirect()->route('admin.productos')->with('success', 'Producto eliminado correctamente.');
     }
+
+    public function actualizarStock(Request $request, $id)
+    {
+        $producto = Producto::findOrFail($id);
+        $producto->update(['stock' => $request->input('stock')]);
+        
+        return redirect()->route('gerente.index')->with('success', 'Stock actualizado correctamente');
+    }
+    
+
 }

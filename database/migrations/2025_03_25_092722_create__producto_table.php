@@ -17,6 +17,10 @@ return new class extends Migration
             $table->id('Producto_id');
             $table->string('Codigo_prod')->unique();
             $table->string('Nombre');
+            $table->string('Estado');
+            $table->decimal('Precio', 10, 2);
+            $table->integer('stock');
+            $table->text('Descripcion');
         });
     }
     

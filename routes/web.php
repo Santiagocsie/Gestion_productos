@@ -39,6 +39,10 @@ Route::middleware(['auth', 'rol:empleado'])->group(function () {
 Route::get('/admin/productos', [ProductoController::class, 'adminIndex'])->name('admin.productos');
 Route::delete('/productos/{producto}', [ProductoController::class, 'destroy'])->name('productos.destroy');
 
+Route::get('/gerente/productos', [ProductoController::class, 'gerenteIndex'])->name('gerente.index');
+Route::put('/productos/{id}/actualizar-stock', [ProductoController::class, 'actualizarStock'])->name('productos.actualizarStock');
+
+
 
 
 Route::get('/', function () {

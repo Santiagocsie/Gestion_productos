@@ -18,11 +18,6 @@ return new class extends Migration
             $table->foreignId('Empleado_id')->references('Empleado_id')->on('Empleado')->onDelete('cascade');
             $table->foreignId('Producto_id')->references('Producto_id')->on('Producto')->onDelete('cascade');
             $table->foreignId('Categoria_id')->references('Categoria_id')->on('Categoria')->onDelete('cascade');
-            $table->text('Descripción');
-            $table->string('Estado');
-            $table->decimal('Precio', 10, 2);
-            $table->integer('stock');
-            $table->string('Imagen_Url')->nullable();
         });
     }
     
