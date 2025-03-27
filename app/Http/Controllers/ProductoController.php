@@ -38,7 +38,7 @@ class ProductoController extends Controller
 
     $productos = $query->get();
     
-    return view('gerente.index', compact('productos'));
+    return view('gerente.productos', compact('productos'));
 }
 
     
@@ -66,7 +66,7 @@ class ProductoController extends Controller
     public function gerenteIndex()
     {
         $productos = Producto::all();
-        return view('gerente.index', compact('productos'));
+        return view('gerente.productos', compact('productos'));
     }
 
     public function empleadoIndex()
@@ -131,8 +131,12 @@ public function store(Request $request)
     public function edit($id)
     {
         $producto = Producto::findOrFail($id);
-        return view('admin.edit', compact('producto'));
+        $categorias = Categoria::all(); // Obtener todas las categorías
+        $categoriasSeleccionadas = DetalleProducto::where('Producto_id', $id)->pluck('Categoria_id')->toArray(); // Obtener categorías asignadas al producto
+        return view('admin.edit', compact('producto', 'categorias', 'categoriasSeleccionadas'));
     }
+    
+
     
     public function update(Request $request, $id)
     {
@@ -143,13 +147,34 @@ public function store(Request $request)
             'Precio' => 'required|numeric|min:0',
             'stock' => 'required|integer|min:0',
             'Descripcion' => 'nullable|string',
+            'categorias' => 'required|array'
+        ]);
+        $empleadoId = Auth::user()->Empleado_id; // Ajusta esto si tu modelo de usuario usa otro campo
+
+        $producto = Producto::findOrFail($id);
+        $producto->update([
+            'Codigo_prod' => $request->Codigo_prod,
+            'Nombre' => $request->Nombre,
+            'Estado' => $request->Estado,
+            'Precio' => $request->Precio,
+            'stock' => $request->stock,
+            'Descripcion' => $request->Descripcion,
+            'Empleado_id' => Auth::user()->Empleado_id // Asegurar que el ID del empleado se guarde
         ]);
     
-        $producto = Producto::findOrFail($id);
-        $producto->update($request->all());
+        // Actualizar categorías en la tabla detalle_producto
+        DetalleProducto::where('Producto_id', $id)->delete(); // Eliminar asociaciones anteriores
     
-        return redirect()->route('admin.productos')->with('success', 'Producto actualizado correctamente.');
-    }    
+        foreach ($request->categorias as $categoria_id) {
+            DetalleProducto::create([
+                'Empleado_id' => $empleadoId, // Aquí se almacena el usuario que creó el producto
+                'Producto_id' => $id,
+                'Categoria_id' => $categoria_id
+            ]);
+        }
+    
+        return redirect()->route('admin.productos.index')->with('success', 'Producto actualizado correctamente.');
+    }
     
 
     public function destroy($id)
@@ -157,7 +182,7 @@ public function store(Request $request)
         $producto = Producto::findOrFail($id);
         $producto->delete();
 
-        return redirect()->route('admin.productos')->with('success', 'Producto eliminado correctamente.');
+        return redirect()->route('admin.productos.index')->with('success', 'Producto eliminado correctamente.');
     }
 
     public function actualizarStock(Request $request, $id)
@@ -165,7 +190,7 @@ public function store(Request $request)
         $producto = Producto::findOrFail($id);
         $producto->update(['stock' => $request->input('stock')]);
 
-        return redirect()->route('gerente.index')->with('success', 'Stock actualizado correctamente');
+        return redirect()->route('gerente.productos.index')->with('success', 'Stock actualizado correctamente');
     }
 
     public function reducirStock(Request $request, $id)
@@ -181,8 +206,9 @@ public function store(Request $request)
         $producto->stock -= $request->stock;
         $producto->save();
     
-        return redirect()->route('empleado.productos')->with('success', 'Stock reducido correctamente.');
+        return redirect()->route('empleado.productos.index')->with('success', 'Stock reducido correctamente.');
     }
+    
     
     
 

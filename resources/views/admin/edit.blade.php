@@ -35,6 +35,19 @@
             <textarea name="Descripcion" class="form-control">{{ $producto->Descripcion }}</textarea>
         </div>
 
+        <div class="mb-3">
+            <label>Categorías</label>
+            <div>
+                @foreach ($categorias as $categoria)
+                    <label class="d-block">
+                        <input type="checkbox" name="categorias[]" value="{{ $categoria->Categoria_id }}"
+                            {{ in_array($categoria->Categoria_id, $categoriasSeleccionadas) ? 'checked' : '' }}>
+                        {{ $categoria->Nombre_categoria }}
+                    </label>
+                @endforeach
+            </div>
+        </div>
+
         <button type="submit" class="btn btn-success">Actualizar</button>
     </form>
 </div>

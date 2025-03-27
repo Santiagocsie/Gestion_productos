@@ -35,12 +35,16 @@
 
 <div class="mb-3">
     <label>Categorías</label>
-    <select name="categorias[]" class="form-control" multiple required>
+    <div class="form-check">
         @foreach ($categorias as $categoria)
-            <option value="{{ $categoria->Categoria_id }}">{{ $categoria->Nombre_categoria }}</option>
+            <div>
+                <input type="checkbox" name="categorias[]" value="{{ $categoria->Categoria_id }}" class="form-check-input">
+                <label class="form-check-label">{{ $categoria->Nombre_categoria }}</label>
+            </div>
         @endforeach
-    </select>
+    </div>
 </div>
+
 
 
         <button type="submit" class="btn btn-success">Guardar</button>
