@@ -7,6 +7,8 @@
     <!-- Barra de búsqueda -->
     <form action="{{ route('gerente.productos.index') }}" method="GET" class="mb-3">
         <input type="text" name="search" class="form-control" placeholder="Buscar producto..." value="{{ request('search') }}">
+        <button type="submit" class="btn btn-primary">Buscar</button>
+        <a href="{{ route('gerente.productos.index') }}" class="btn btn-secondary ms-2">Limpiar</a>
     </form>
 
     <!-- Tabla de productos -->
