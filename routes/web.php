@@ -26,18 +26,16 @@ Route::middleware(['auth', 'rol:administrador'])->group(function () {
 
 // Rutas para GERENTES
 Route::middleware(['auth', 'rol:gerente'])->group(function () {
-    Route::get('/gerente', [GerenteController::class, 'index'])->name('gerente.dashboard');
+    Route::get('/gerente', [GerenteController::class, 'index'])->name('gerente.index');
 });
 
 // Rutas para EMPLEADOS
 Route::middleware(['auth', 'rol:empleado'])->group(function () {
-    Route::get('/empleado', [EmplController::class, 'index'])->name('empleado.dashboard');
+    Route::get('/empleado', [EmplController::class, 'index'])->name('empleado.productos');
 });
 // Rutas para Admin
 Route::get('/admin/productos', [ProductoController::class, 'adminIndex'])->name('admin.productos');
 Route::delete('/productos/{producto}', [ProductoController::class, 'destroy'])->name('productos.destroy');
-<<<<<<< HEAD
-=======
 // Rutas para gerente
 Route::get('/gerente/productos', [ProductoController::class, 'gerenteIndex'])->name('gerente.index');
 Route::put('/productos/{id}/actualizar-stock', [ProductoController::class, 'actualizarStock'])->name('productos.actualizarStock');
@@ -46,7 +44,6 @@ Route::get('/empleado/productos', [ProductoController::class, 'empleadoIndex'])-
 Route::put('/productos/{id}/reducir-stock', [ProductoController::class, 'reducirStock'])->name('productos.reducirStock');
 
 
->>>>>>> ee7e0df (funcionalidad de empleado)
 
 
 
