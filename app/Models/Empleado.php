@@ -13,7 +13,7 @@ class Empleado extends Authenticatable // Extender Authenticatable
     protected $primaryKey = 'Empleado_id';
     public $timestamps = false;
 
-    protected $fillable = ['Nombre', 'Correo', 'Contrasena', 'Telefono', 'Direccion', 'Fecha_nacimiento', 'Genero'];
+    protected $fillable = ['Nombre', 'Email', 'Contrasena', 'Telefono', 'Direccion', 'Fecha_nacimiento', 'Genero'];
 
     protected $casts = [
         'Contrasena' => 'string',

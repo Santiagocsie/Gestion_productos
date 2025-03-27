@@ -25,7 +25,7 @@ Route::post('/empleado/logout', [EmpleadoAuthController::class, 'logout'])->name
 
 
 Route::get('/', function () {
-    return view('welcome');
+     return redirect()->route('login');
 });
 
 // Rutas protegidas para empleados autenticados
@@ -34,6 +34,10 @@ Route::middleware('auth:empleado')->group(function () {
         return view('empleado.dashboard'); // Asegúrate de que esta vista existe
     })->name('empleado.dashboard');
 });
+
+Auth::routes();
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 Auth::routes();
 
