@@ -6,6 +6,8 @@ use App\Models\Producto;
 use App\Models\Categoria;
 use Illuminate\Http\Request;
 use App\Models\DetalleProducto;
+use Illuminate\Support\Facades\Auth;
+
 
 class ProductoController extends Controller
 {
@@ -74,30 +76,50 @@ class ProductoController extends Controller
 }
 
 
-    public function create()
-    {
-        $categorias = Categoria::all();
-        return view('admin.create', compact('categorias'));
+public function create()
+{
+    $categorias = Categoria::all();
+    return view('admin.create', compact('categorias'));
+}
+
+
+public function store(Request $request)
+{
+    $request->validate([
+        'Codigo_prod' => 'required|unique:producto,Codigo_prod',
+        'Nombre' => 'required',
+        'Estado' => 'required',
+        'Precio' => 'required|numeric',
+        'stock' => 'required|integer',
+        'Descripcion' => 'nullable',
+        'categorias' => 'required|array',
+    ]);
+
+    // Obtener el ID del empleado autenticado
+    $empleadoId = Auth::user()->Empleado_id; // Ajusta esto si tu modelo de usuario usa otro campo
+
+    // Crear el producto
+    $producto = Producto::create([
+        'Codigo_prod' => $request->Codigo_prod,
+        'Nombre' => $request->Nombre,
+        'Estado' => $request->Estado,
+        'Precio' => $request->Precio,
+        'stock' => $request->stock,
+        'Descripcion' => $request->Descripcion
+    ]);
+
+    // Guardar categorías en la tabla Detalle_Producto con el Empleado_id
+    foreach ($request->categorias as $categoria_id) {
+        DetalleProducto::create([
+            'Empleado_id' => $empleadoId, // Aquí se almacena el usuario que creó el producto
+            'Producto_id' => $producto->Producto_id,
+            'Categoria_id' => $categoria_id
+        ]);
     }
 
-    public function store(Request $request)
-    {
-        // Validar los datos del formulario
-        $request->validate([
-            'Codigo_prod' => 'required|unique:producto,Codigo_prod',
-            'Nombre' => 'required|string|max:255',
-            'Estado' => 'required|in:Disponible,Agotado',
-            'Precio' => 'required|numeric|min:0',
-            'stock' => 'required|integer|min:0',
-            'Descripcion' => 'nullable|string',
-        ]);
-    
-        // Insertar en la base de datos
-        Producto::create($request->all());
-    
-        // Redirigir con un mensaje de éxito
-        return redirect()->route('admin.productos')->with('success', 'Producto creado exitosamente.');
-    }
+    return redirect()->route('admin.productos.index')->with('success', 'Producto creado con éxito.');
+}
+
     
 
     public function show($id)

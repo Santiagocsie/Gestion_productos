@@ -33,6 +33,16 @@
     <textarea name="Descripcion" class="form-control"></textarea>
 </div>
 
+<div class="mb-3">
+    <label>Categorías</label>
+    <select name="categorias[]" class="form-control" multiple required>
+        @foreach ($categorias as $categoria)
+            <option value="{{ $categoria->Categoria_id }}">{{ $categoria->Nombre_categoria }}</option>
+        @endforeach
+    </select>
+</div>
+
+
         <button type="submit" class="btn btn-success">Guardar</button>
     </form>
 </div>

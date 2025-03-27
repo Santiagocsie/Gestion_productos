@@ -26,4 +26,10 @@ class Producto extends Model
     {
         return $this->hasMany(DetalleProducto::class, 'Producto_id');
     }
+
+    public function categorias()
+{
+    return $this->belongsToMany(Categoria::class, 'detalle_producto', 'Producto_id', 'Categoria_id');
+}
+
 }

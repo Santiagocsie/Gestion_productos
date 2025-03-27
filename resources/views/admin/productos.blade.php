@@ -21,7 +21,7 @@
                 <th>Estado</th>
                 <th>Precio</th>
                 <th>Stock</th>
-                <th>Acciones</th>
+                <th>Categoría</th>
             </tr>
         </thead>
         <tbody>
@@ -32,6 +32,12 @@
                     <td>{{ $producto->Estado }}</td>
                     <td>${{ number_format($producto->Precio, 2) }}</td>
                     <td>{{ $producto->stock }}</td>
+                    <td>
+    @foreach ($producto->categorias as $categoria)
+        <span class="badge bg-primary">{{ $categoria->Nombre_categoria }}</span>
+    @endforeach
+</td>
+
                     <td>
                         <a href="{{ route('admin.productos.edit', $producto->Producto_id) }}" class="btn btn-warning">Editar</a>
                         <form action="{{ route('admin.productos.destroy', $producto->Producto_id) }}" method="POST" style="display:inline-block;">
