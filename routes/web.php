@@ -33,12 +33,27 @@ Route::middleware(['auth', 'rol:gerente'])->group(function () {
 Route::middleware(['auth', 'rol:empleado'])->group(function () {
     Route::get('/empleado', [EmplController::class, 'index'])->name('empleado.productos');
 });
+
 // Rutas para Admin
 Route::get('/admin/productos', [ProductoController::class, 'adminIndex'])->name('admin.productos');
+Route::get('/admin/productos/create', [ProductoController::class, 'create'])->name('admin.productos.create');
+Route::get('/admin/productos/{id}/edit', [ProductoController::class, 'edit'])->name('admin.productos.edit');
+Route::delete('/admin/productos/{id}', [ProductoController::class, 'destroy'])->name('admin.productos.destroy');
+
+Route::prefix('admin')->group(function () {
+    Route::get('/productos', [ProductoController::class, 'adminIndex'])->name('admin.productos');
+    Route::get('/productos/create', [ProductoController::class, 'create'])->name('admin.productos.create');
+    Route::post('/productos', [ProductoController::class, 'store'])->name('admin.productos.store'); // Aquí está el problema
+});
+
+
+
 Route::delete('/productos/{producto}', [ProductoController::class, 'destroy'])->name('productos.destroy');
+
 // Rutas para gerente
 Route::get('/gerente/productos', [ProductoController::class, 'gerenteIndex'])->name('gerente.index');
 Route::put('/productos/{id}/actualizar-stock', [ProductoController::class, 'actualizarStock'])->name('productos.actualizarStock');
+
 // Rutas para empleado
 Route::get('/empleado/productos', [ProductoController::class, 'empleadoIndex'])->name('empleado.productos');
 Route::put('/productos/{id}/reducir-stock', [ProductoController::class, 'reducirStock'])->name('productos.reducirStock');
