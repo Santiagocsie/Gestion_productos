@@ -3,7 +3,7 @@
 @section('content')
 <div class="container">
     <h2>Crear Producto</h2>
-    <form action="{{ route('admin.productos.store') }}" method="POST">
+    <form action="{{ route('productos.store') }}" method="POST">
         @csrf
         <div class="mb-3">
             <label>Código</label>
@@ -28,6 +28,11 @@
             <label>Stock</label>
             <input type="number" name="stock" class="form-control" required>
         </div>
+        <div class="mb-3">
+    <label>Descripción</label>
+    <textarea name="Descripcion" class="form-control"></textarea>
+</div>
+
         <button type="submit" class="btn btn-success">Guardar</button>
     </form>
 </div>

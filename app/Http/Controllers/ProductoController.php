@@ -53,11 +53,11 @@ class ProductoController extends Controller
 
         $producto = Producto::create($request->only(['Codigo_prod', 'Nombre', 'Estado', 'Precio', 'stock', 'Descripcion']));
 
-        DetalleProducto::create([
-            'Producto_id' => $producto->Producto_id,
-            'Categoria_id' => $request->Categoria_id,
-            'Empleado_id' => auth()->user()->id ?? null,  // Si hay autenticación
-        ]);
+        //DetalleProducto::create([
+        //    'Producto_id' => $producto->Producto_id,
+        //    'Categoria_id' => $request->Categoria_id,
+        //    'Empleado_id' => auth()->user()->id ?? null,  // Si hay autenticación
+        //]);
 
         return redirect()->route('admin.productos')->with('success', 'Producto creado correctamente.');
     }
@@ -133,5 +133,3 @@ class ProductoController extends Controller
     
 
 }
-  // <- Aquí cierra correctamente la clase
-

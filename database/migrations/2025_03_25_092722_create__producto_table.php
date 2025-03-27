@@ -13,14 +13,15 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('Producto', function (Blueprint $table) {
+        Schema::create('producto', function (Blueprint $table) {
             $table->id('Producto_id');
             $table->string('Codigo_prod')->unique();
             $table->string('Nombre');
-            $table->string('Estado');
-            $table->decimal('Precio', 10, 2);
+            $table->enum('Estado', ['Agotado', 'Disponible'])->default('Disponible'); // ✅ Agregar un valor por defecto
+            $table->decimal('Precio', 10, 2)->default(0.00);
             $table->integer('stock');
-            $table->text('Descripcion');
+            $table->text('Descripcion')->nullable();
+            $table->timestamps();
         });
     }
     
