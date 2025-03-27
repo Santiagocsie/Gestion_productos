@@ -1,10 +1,7 @@
 <?php
-
 use Illuminate\Support\Facades\Route;
-//use App\Http\Controllers\EmpleadoAuthController;
+use App\Http\Controllers\EmpleadoAuthController;
 use Illuminate\Support\Facades\Auth;
-
-
 use App\Http\Controllers\CategoriaController;
 use App\Http\Controllers\ProductoController;
 use App\Http\Controllers\EmpleadoController;
@@ -13,6 +10,7 @@ use App\Http\Controllers\ContratoController;
 use App\Http\Controllers\DetalleProductoController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\GerenteController;
+use App\Http\Controllers\EmplController;
 
 Route::resource('cargos', CargoController::class);
 Route::resource('contratos', ContratoController::class);
@@ -21,9 +19,9 @@ Route::resource('categorias', CategoriaController::class);
 Route::resource('productos', ProductoController::class);
 Route::resource('empleados', EmpleadoController::class);
 
-
+// Rutas para ADMINISTRADORES
 Route::middleware(['auth', 'rol:administrador'])->group(function () {
-    Route::get('/admin', [AdminController::class, 'index'])->name('admin.dashboard');
+    Route::get('/admin', [AdminController::class, 'index'])->name('admin.productos');
 });
 
 // Rutas para GERENTES
@@ -33,33 +31,17 @@ Route::middleware(['auth', 'rol:gerente'])->group(function () {
 
 // Rutas para EMPLEADOS
 Route::middleware(['auth', 'rol:empleado'])->group(function () {
-    Route::get('/empleado', [EmpleadoController::class, 'index'])->name('empleado.dashboard');
+    Route::get('/empleado', [EmplController::class, 'index'])->name('empleado.dashboard');
 });
 
 Route::get('/admin/productos', [ProductoController::class, 'adminIndex'])->name('admin.productos');
 Route::delete('/productos/{producto}', [ProductoController::class, 'destroy'])->name('productos.destroy');
 
-Route::get('/gerente/productos', [ProductoController::class, 'gerenteIndex'])->name('gerente.index');
-Route::put('/productos/{id}/actualizar-stock', [ProductoController::class, 'actualizarStock'])->name('productos.actualizarStock');
-
-
 
 
 Route::get('/', function () {
-     return redirect()->route('login');
-});
-
-// Rutas protegidas para empleados autenticados
-Route::middleware('auth:empleado')->group(function () {
-    Route::get('/empleado/dashboard', function () {
-        return view('empleado.dashboard'); // Asegúrate de que esta vista existe
-    })->name('empleado.dashboard');
+    return redirect()->route('login');
 });
 
 Auth::routes();
-
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-
-Auth::routes();
-
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
