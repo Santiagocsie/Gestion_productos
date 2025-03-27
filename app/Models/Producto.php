@@ -9,7 +9,7 @@ class Producto extends Model
 {
     use HasFactory;
 
-    protected $table = 'Producto';
+    protected $table = 'producto'; // Nombre correcto de la tabla
     protected $primaryKey = 'Producto_id';
     public $timestamps = false;
 

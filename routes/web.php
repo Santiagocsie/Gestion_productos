@@ -24,6 +24,11 @@ Route::post('/empleado/login', [EmpleadoAuthController::class, 'login']);
 Route::post('/empleado/logout', [EmpleadoAuthController::class, 'logout'])->name('empleado.logout');
 
 
+Route::get('/admin/productos', [ProductoController::class, 'adminIndex'])->name('admin.productos');
+Route::delete('/productos/{producto}', [ProductoController::class, 'destroy'])->name('productos.destroy');
+
+
+
 Route::get('/', function () {
      return redirect()->route('login');
 });

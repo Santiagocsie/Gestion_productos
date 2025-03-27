@@ -12,6 +12,12 @@ class ProductoController extends Controller
         return Producto::all();
     }
 
+    public function adminIndex()
+    {
+        $productos = Producto::all();
+        return view('admin.productos', compact('productos'));
+    }
+
     public function store(Request $request)
     {
         $request->validate([
@@ -19,7 +25,9 @@ class ProductoController extends Controller
             'Nombre' => 'required|string|max:100',
         ]);
 
-        return Producto::create($request->all());
+        Producto::create($request->all());
+
+        return redirect()->route('admin.productos')->with('success', 'Producto creado correctamente.');
     }
 
     public function show($id)
@@ -31,11 +39,14 @@ class ProductoController extends Controller
     {
         $producto = Producto::findOrFail($id);
         $producto->update($request->all());
-        return $producto;
+
+        return redirect()->route('admin.productos')->with('success', 'Producto actualizado correctamente.');
     }
 
     public function destroy($id)
     {
-        return Producto::destroy($id);
+        Producto::destroy($id);
+
+        return redirect()->route('admin.productos')->with('success', 'Producto eliminado correctamente.');
     }
 }
