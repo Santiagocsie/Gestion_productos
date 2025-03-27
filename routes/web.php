@@ -46,6 +46,10 @@ Route::prefix('admin')->group(function () {
     Route::post('/productos', [ProductoController::class, 'store'])->name('admin.productos.store'); // Aquí está el problema
 });
 
+Route::get('/admin/productos/{id}/edit', [ProductoController::class, 'edit'])->name('admin.productos.edit');
+Route::put('/admin/productos/{id}', [ProductoController::class, 'update'])->name('admin.productos.update');
+
+
 
 
 Route::delete('/productos/{producto}', [ProductoController::class, 'destroy'])->name('productos.destroy');

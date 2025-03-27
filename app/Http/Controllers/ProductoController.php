@@ -55,7 +55,7 @@ class ProductoController extends Controller
         Producto::create($request->all());
     
         // Redirigir con un mensaje de éxito
-        return redirect()->route('productos.index')->with('success', 'Producto creado exitosamente.');
+        return redirect()->route('admin.productos')->with('success', 'Producto creado exitosamente.');
     }
     
 
@@ -68,32 +68,26 @@ class ProductoController extends Controller
     public function edit($id)
     {
         $producto = Producto::findOrFail($id);
-        $categorias = Categoria::all();
-        return view('admin.edit', compact('producto', 'categorias'));
+        return view('admin.edit', compact('producto'));
     }
-
+    
     public function update(Request $request, $id)
     {
-        $producto = Producto::findOrFail($id);
-
         $request->validate([
-            'Nombre' => 'required|string|max:255',
-            'Estado' => 'required|in:Agotado,Disponible',
+            'Codigo_prod' => 'required|unique:producto,Codigo_prod,' . $id . ',Producto_id',
+            'Nombre' => 'required',
+            'Estado' => 'required',
             'Precio' => 'required|numeric|min:0',
             'stock' => 'required|integer|min:0',
             'Descripcion' => 'nullable|string',
-            'Categoria_id' => 'required|exists:categoria,Categoria_id',
         ]);
-
-        $producto->update($request->only(['Nombre', 'Estado', 'Precio', 'stock', 'Descripcion']));
-
-        $detalle = DetalleProducto::where('Producto_id', $producto->Producto_id)->first();
-        if ($detalle) {
-            $detalle->update(['Categoria_id' => $request->Categoria_id]);
-        }
-
+    
+        $producto = Producto::findOrFail($id);
+        $producto->update($request->all());
+    
         return redirect()->route('admin.productos')->with('success', 'Producto actualizado correctamente.');
-    }
+    }    
+    
 
     public function destroy($id)
     {

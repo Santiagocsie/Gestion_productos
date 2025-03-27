@@ -24,7 +24,7 @@
                     <td>${{ number_format($producto->Precio, 2) }}</td>
                     <td>{{ $producto->stock }}</td>
                     <td>
-                        <a href="{{ route('admin.productos.edit', $producto->Producto_id) }}" class="btn btn-warning">Editar</a>
+                    <a href="{{ route('admin.productos.edit', $producto->Producto_id) }}" class="btn btn-warning">Editar</a>
                         <form action="{{ route('admin.productos.destroy', $producto->Producto_id) }}" method="POST" style="display:inline-block;">
                             @csrf
                             @method('DELETE')
