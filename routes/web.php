@@ -45,7 +45,6 @@ Route::prefix('admin')->group(function () {
     Route::get('/productos/create', [ProductoController::class, 'create'])->name('admin.productos.create');
     Route::post('/productos', [ProductoController::class, 'store'])->name('admin.productos.store'); // Aquí está el problema
 });
-Route::resource('productos', ProductoController::class);
 
 
 

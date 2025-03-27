@@ -41,26 +41,23 @@ class ProductoController extends Controller
 
     public function store(Request $request)
     {
+        // Validar los datos del formulario
         $request->validate([
-            'Codigo_prod' => 'required|string|max:255|unique:producto,Codigo_prod',
+            'Codigo_prod' => 'required|unique:producto,Codigo_prod',
             'Nombre' => 'required|string|max:255',
-            'Estado' => 'required|in:Agotado,Disponible',
+            'Estado' => 'required|in:Disponible,Agotado',
             'Precio' => 'required|numeric|min:0',
             'stock' => 'required|integer|min:0',
             'Descripcion' => 'nullable|string',
-            'Categoria_id' => 'required|exists:categoria,Categoria_id',
         ]);
-
-        $producto = Producto::create($request->only(['Codigo_prod', 'Nombre', 'Estado', 'Precio', 'stock', 'Descripcion']));
-
-        //DetalleProducto::create([
-        //    'Producto_id' => $producto->Producto_id,
-        //    'Categoria_id' => $request->Categoria_id,
-        //    'Empleado_id' => auth()->user()->id ?? null,  // Si hay autenticación
-        //]);
-
-        return redirect()->route('admin.productos')->with('success', 'Producto creado correctamente.');
+    
+        // Insertar en la base de datos
+        Producto::create($request->all());
+    
+        // Redirigir con un mensaje de éxito
+        return redirect()->route('productos.index')->with('success', 'Producto creado exitosamente.');
     }
+    
 
     public function show($id)
     {
