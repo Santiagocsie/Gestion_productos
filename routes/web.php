@@ -36,6 +36,18 @@ Route::middleware(['auth', 'rol:empleado'])->group(function () {
 
 // Rutas para Admin
 Route::get('/admin/productos', [ProductoController::class, 'adminIndex'])->name('admin.productos');
+Route::get('/admin/productos/create', [ProductoController::class, 'create'])->name('admin.productos.create');
+Route::get('/admin/productos/{id}/edit', [ProductoController::class, 'edit'])->name('admin.productos.edit');
+Route::delete('/admin/productos/{id}', [ProductoController::class, 'destroy'])->name('admin.productos.destroy');
+
+Route::prefix('admin')->group(function () {
+    Route::get('/productos', [ProductoController::class, 'adminIndex'])->name('admin.productos');
+    Route::get('/productos/create', [ProductoController::class, 'create'])->name('admin.productos.create');
+    Route::post('/productos', [ProductoController::class, 'store'])->name('admin.productos.store'); // Aquí está el problema
+});
+
+
+
 Route::delete('/productos/{producto}', [ProductoController::class, 'destroy'])->name('productos.destroy');
 
 // Rutas para gerente
