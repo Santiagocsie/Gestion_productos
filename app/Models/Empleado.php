@@ -3,34 +3,44 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Foundation\Auth\User as Authenticatable; // Cambiar Model por Authenticatable
+use Illuminate\Foundation\Auth\User as Authenticatable;
 
-class Empleado extends Authenticatable // Extender Authenticatable
+class Empleado extends Authenticatable
 {
     use HasFactory;
 
-    protected $table = 'Empleado'; // Asegurar que coincida con la BD
+    protected $table = 'empleado'; // Nombre correcto de la tabla
     protected $primaryKey = 'Empleado_id';
     public $timestamps = false;
 
     protected $fillable = ['Nombre', 'Email', 'Contrasena', 'Telefono', 'Direccion', 'Fecha_nacimiento', 'Genero'];
 
-    protected $casts = [
-        'Contrasena' => 'string',
-    ];
+    protected $hidden = ['Contrasena'];
 
     public function contratos()
     {
         return $this->hasMany(Contrato::class, 'Empleado_id');
     }
 
-    public function detallesProducto()
+    public function contratoActual()
     {
-        return $this->hasMany(DetalleProducto::class, 'Empleado_id');
+        return $this->hasOne(Contrato::class, 'Empleado_id')->latest('Fecha_inicio');
+    }
+
+    public function cargo()
+    {
+        return $this->hasOneThrough(
+            Cargo::class,
+            Contrato::class,
+            'Empleado_id', // Llave foránea en Contrato
+            'Cargo_id',    // Llave foránea en Cargo
+            'Empleado_id', // Llave primaria en Empleado
+            'Cargo_id'     // Llave primaria en Contrato
+        );
     }
 
     public function getAuthPassword()
     {
-        return $this->attributes['Contrasena']; // Asegurar que usa la clave correcta
+        return $this->Contrasena;
     }
 }

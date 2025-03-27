@@ -11,6 +11,8 @@ use App\Http\Controllers\EmpleadoController;
 use App\Http\Controllers\CargoController;
 use App\Http\Controllers\ContratoController;
 use App\Http\Controllers\DetalleProductoController;
+use App\Http\Controllers\AdminController;
+use App\Http\Controllers\GerenteController;
 
 Route::resource('cargos', CargoController::class);
 Route::resource('contratos', ContratoController::class);
@@ -19,10 +21,20 @@ Route::resource('categorias', CategoriaController::class);
 Route::resource('productos', ProductoController::class);
 Route::resource('empleados', EmpleadoController::class);
 
-Route::get('/empleado/login', [EmpleadoAuthController::class, 'showLoginForm'])->name('empleado.login');
-Route::post('/empleado/login', [EmpleadoAuthController::class, 'login']);
-Route::post('/empleado/logout', [EmpleadoAuthController::class, 'logout'])->name('empleado.logout');
 
+Route::middleware(['auth', 'rol:administrador'])->group(function () {
+    Route::get('/admin', [AdminController::class, 'index'])->name('admin.dashboard');
+});
+
+// Rutas para GERENTES
+Route::middleware(['auth', 'rol:gerente'])->group(function () {
+    Route::get('/gerente', [GerenteController::class, 'index'])->name('gerente.dashboard');
+});
+
+// Rutas para EMPLEADOS
+Route::middleware(['auth', 'rol:empleado'])->group(function () {
+    Route::get('/empleado', [EmpleadoController::class, 'index'])->name('empleado.dashboard');
+});
 
 Route::get('/admin/productos', [ProductoController::class, 'adminIndex'])->name('admin.productos');
 Route::delete('/productos/{producto}', [ProductoController::class, 'destroy'])->name('productos.destroy');

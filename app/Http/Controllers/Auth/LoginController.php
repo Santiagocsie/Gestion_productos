@@ -4,6 +4,9 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use Illuminate\Http\Request;
+use App\Models\Contrato;
+use App\Models\Cargo;
 
 class LoginController extends Controller
 {
@@ -20,13 +23,29 @@ class LoginController extends Controller
 
     use AuthenticatesUsers;
 
-    /**
-     * Where to redirect users after login.
-     *
-     * @var string
-     */
-    protected $redirectTo = '/home';
-
+    protected function authenticated(Request $request, $user)
+    {
+        // Obtener el contrato del usuario autenticado
+        $contrato = Contrato::where('Empleado_id', $user->Empleado_id)->first();
+    
+        if ($contrato) {
+            $cargo = Cargo::where('Cargo_id', $contrato->Cargo_id)->first();
+    
+            if ($cargo) {
+                // Redirigir según el rol
+                if ($cargo->Rol === 'administrador') {
+                    return redirect()->route('admin.dashboard');
+                } elseif ($cargo->Rol === 'gerente') {
+                    return redirect()->route('gerente.dashboard');
+                } elseif ($cargo->Rol === 'empleado') {
+                    return redirect()->route('empleado.dashboard');
+                }
+            }
+        }
+    
+        // Si no tiene un rol válido, redirigir a la página por defecto
+        return redirect('/home');
+    }
     /**
      * Create a new controller instance.
      *
