@@ -4,6 +4,11 @@
 <div class="container mt-4">
     <h2>Productos - Vista de Empleado</h2>
 
+     <!-- Barra de búsqueda -->
+     <form action="{{ route('empleado.productos.index') }}" method="GET" class="mb-3">
+        <input type="text" name="search" class="form-control" placeholder="Buscar producto..." value="{{ request('search') }}">
+    </form>
+
     <!-- Tabla de productos -->
     <table class="table table-bordered">
         <thead class="table-dark">

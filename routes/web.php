@@ -60,10 +60,13 @@ Route::delete('/productos/{producto}', [ProductoController::class, 'destroy'])->
 // Rutas para gerente
 Route::get('/gerente/productos', [ProductoController::class, 'gerenteIndex'])->name('gerente.index');
 Route::put('/productos/{id}/actualizar-stock', [ProductoController::class, 'actualizarStock'])->name('productos.actualizarStock');
+Route::get('/gerente/productos', [ProductoController::class, 'indexgerente'])->name('gerente.productos.index');
+
 
 // Rutas para empleado
 Route::get('/empleado/productos', [ProductoController::class, 'empleadoIndex'])->name('empleado.productos');
 Route::put('/productos/{id}/reducir-stock', [ProductoController::class, 'reducirStock'])->name('productos.reducirStock');
+Route::get('/empleado/productos', [ProductoController::class, 'indexempleado'])->name('empleado.productos.index');
 
 
 

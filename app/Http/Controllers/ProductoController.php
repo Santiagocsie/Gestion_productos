@@ -10,6 +10,36 @@ use App\Models\DetalleProducto;
 class ProductoController extends Controller
 {
     
+  
+    public function indexempleado(Request $request)
+    {
+        $query = Producto::query();
+    
+        if ($request->has('search')) {
+            $query->where('Nombre', 'LIKE', '%' . $request->search . '%')
+                  ->orWhere('Codigo_prod', 'LIKE', '%' . $request->search . '%');
+        }
+    
+        $productos = $query->get();
+        
+        return view('empleado.productos', compact('productos'));
+    }
+
+    public function indexgerente(Request $request)
+{
+    $query = Producto::query();
+
+    if ($request->has('search')) {
+        $query->where('Nombre', 'LIKE', '%' . $request->search . '%')
+              ->orWhere('Codigo_prod', 'LIKE', '%' . $request->search . '%');
+    }
+
+    $productos = $query->get();
+    
+    return view('gerente.index', compact('productos'));
+}
+
+    
     public function index(Request $request)
 {
     $query = Producto::query();
