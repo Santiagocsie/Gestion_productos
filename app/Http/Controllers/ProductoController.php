@@ -27,6 +27,13 @@ class ProductoController extends Controller
         return view('gerente.index', compact('productos'));
     }
 
+    public function empleadoIndex()
+{
+    $productos = Producto::all(); // Obtener todos los productos
+    return view('empleado.productos', compact('productos'));
+}
+
+
     public function store(Request $request)
     {
         $request->validate([
@@ -79,6 +86,23 @@ class ProductoController extends Controller
         
         return redirect()->route('gerente.index')->with('success', 'Stock actualizado correctamente');
     }
+
+    public function reducirStock(Request $request, $id)
+    {
+        $producto = Producto::findOrFail($id);
+    
+        // Validar que el stock no sea menor al que se intenta restar
+        $request->validate([
+            'stock' => 'required|integer|min:1|max:' . $producto->stock,
+        ]);
+    
+        // Reducir el stock
+        $producto->stock -= $request->stock;
+        $producto->save();
+    
+        return redirect()->route('empleado.productos')->with('success', 'Stock reducido correctamente.');
+    }
+    
     
 
 }
