@@ -9,10 +9,21 @@ use App\Models\DetalleProducto;
 
 class ProductoController extends Controller
 {
-    public function index()
-    {
-        return Producto::all();
+    
+    public function index(Request $request)
+{
+    $query = Producto::query();
+
+    if ($request->has('search')) {
+        $query->where('Nombre', 'LIKE', '%' . $request->search . '%')
+              ->orWhere('Codigo_prod', 'LIKE', '%' . $request->search . '%');
     }
+
+    $productos = $query->get();
+    
+    return view('admin.productos', compact('productos'));
+}
+
 
     public function adminIndex()
     {

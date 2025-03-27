@@ -49,6 +49,9 @@ Route::prefix('admin')->group(function () {
 Route::get('/admin/productos/{id}/edit', [ProductoController::class, 'edit'])->name('admin.productos.edit');
 Route::put('/admin/productos/{id}', [ProductoController::class, 'update'])->name('admin.productos.update');
 
+Route::get('/admin/productos', [ProductoController::class, 'index'])->name('admin.productos.index');
+
+
 
 
 
