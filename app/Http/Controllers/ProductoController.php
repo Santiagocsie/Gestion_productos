@@ -15,11 +15,18 @@ class ProductoController extends Controller
   
     public function indexempleado(Request $request)
     {
-        $query = Producto::query();
-    
+        $query = Producto::with('categorias'); // Cargar categorías con los productos
+
         if ($request->has('search')) {
-            $query->where('Nombre', 'LIKE', '%' . $request->search . '%')
-                  ->orWhere('Codigo_prod', 'LIKE', '%' . $request->search . '%');
+            $search = $request->search;
+            
+            $query->where(function ($q) use ($search) {
+                $q->where('Nombre', 'LIKE', "%$search%")
+                  ->orWhere('Codigo_prod', 'LIKE', "%$search%");
+            })
+            ->orWhereHas('categorias', function ($q) use ($search) {
+                $q->where('Nombre_categoria', 'LIKE', "%$search%");
+            });
         }
     
         $productos = $query->get();
@@ -29,32 +36,47 @@ class ProductoController extends Controller
 
     public function indexgerente(Request $request)
 {
-    $query = Producto::query();
+    $query = Producto::with('categorias'); // Cargar categorías con los productos
 
     if ($request->has('search')) {
-        $query->where('Nombre', 'LIKE', '%' . $request->search . '%')
-              ->orWhere('Codigo_prod', 'LIKE', '%' . $request->search . '%');
+        $search = $request->search;
+        
+        $query->where(function ($q) use ($search) {
+            $q->where('Nombre', 'LIKE', "%$search%")
+              ->orWhere('Codigo_prod', 'LIKE', "%$search%");
+        })
+        ->orWhereHas('categorias', function ($q) use ($search) {
+            $q->where('Nombre_categoria', 'LIKE', "%$search%");
+        });
     }
-
     $productos = $query->get();
     
     return view('gerente.productos', compact('productos'));
 }
+    
 
     
-    public function index(Request $request)
+public function index(Request $request)
 {
-    $query = Producto::query();
+    $query = Producto::with('categorias'); // Cargar categorías con los productos
 
     if ($request->has('search')) {
-        $query->where('Nombre', 'LIKE', '%' . $request->search . '%')
-              ->orWhere('Codigo_prod', 'LIKE', '%' . $request->search . '%');
+        $search = $request->search;
+        
+        $query->where(function ($q) use ($search) {
+            $q->where('Nombre', 'LIKE', "%$search%")
+              ->orWhere('Codigo_prod', 'LIKE', "%$search%");
+        })
+        ->orWhereHas('categorias', function ($q) use ($search) {
+            $q->where('Nombre_categoria', 'LIKE', "%$search%");
+        });
     }
 
     $productos = $query->get();
-    
+
     return view('admin.productos', compact('productos'));
 }
+
 
 
     public function adminIndex()

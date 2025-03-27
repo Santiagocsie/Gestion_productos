@@ -44,7 +44,7 @@ class LoginController extends Controller
         }
     
         // Si no tiene un rol válido, redirigir a la página por defecto
-        return redirect('/home');
+        //return redirect('/');
     }
     /**
      * Create a new controller instance.

@@ -63,8 +63,21 @@ Route::get('/empleado/productos', [ProductoController::class, 'indexempleado'])-
 
 
 Route::get('/', function () {
+    if (Auth::check()) {
+        Auth::logout(); // Desloguear al usuario si vuelve a la raíz
+        return redirect()->route('login')->with('message', 'Sesión cerrada automáticamente.');
+    }
     return redirect()->route('login');
-});
+})->name('root');
+
+Route::get('/login', function () {
+    if (Auth::check()) {
+        Auth::logout(); // Desloguear al usuario si vuelve al login
+        return redirect()->route('login')->with('message', 'Sesión cerrada automáticamente.');
+    }
+    return view('auth.login');
+})->name('login');
+
 
 Auth::routes();
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+//Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
