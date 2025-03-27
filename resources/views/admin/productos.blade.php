@@ -5,8 +5,8 @@
     <h2>Administración de Productos</h2>
 
     <!-- Botón para abrir el modal de agregar producto -->
-    <button class="btn btn-success mb-3" data-bs-toggle="modal" data-bs-target="#modalAgregarProducto">
-        Agregar Producto
+    <button>
+        <a href="{{ route('admin.productos.create') }}" class="btn btn-success">Agregar Producto</a>
     </button>
 
     <!-- Tabla de productos -->
@@ -28,7 +28,8 @@
                     <a href="#" class="btn btn-primary btn-sm">Editar</a>
 
                     <!-- Formulario de eliminación -->
-                    <form action="{{ route('productos.destroy', $producto->Producto_id) }}" method="POST">
+                    <form action="{{ route('productos.destroy', ['producto' => $producto->Producto_id]) }}" method="POST">
+
     @csrf
     @method('DELETE')
     <button type="submit">Eliminar</button>
