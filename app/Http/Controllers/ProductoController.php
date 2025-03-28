@@ -219,16 +219,21 @@ public function store(Request $request)
     {
         $producto = Producto::findOrFail($id);
     
-        // Validar que el stock no sea menor al que se intenta restar
-        $request->validate([
-            'stock' => 'required|integer|min:1|max:' . $producto->stock,
-        ]);
-    
         // Reducir el stock
-        $producto->stock -= $request->stock;
+        $producto->stock -= $request->input('stock');
+    
+        // Verificar si el stock llegó a 0
+        if ($producto->stock <= 0) {
+            $producto->stock = 0;
+            $producto->estado = 'Agotado';
+        } else {
+            $producto->estado = 'Disponible';
+        }
+    
+        // Guardar cambios en la BD
         $producto->save();
     
-        return redirect()->route('empleado.productos.index')->with('success', 'Stock reducido correctamente.');
+        return redirect()->back()->with('success', 'Stock actualizado correctamente.');
     }
     
     

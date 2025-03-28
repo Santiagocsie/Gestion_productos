@@ -26,7 +26,8 @@
     
 
     <!-- Tabla de productos -->
-    <table class="table table-bordered">
+     
+    <table class="table table-bordered ">
         <thead class="table-dark">
             <tr>
                 <th>Código</th>
