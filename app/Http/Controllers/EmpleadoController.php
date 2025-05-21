@@ -16,7 +16,7 @@ class EmpleadoController extends Controller
     {
         $request->validate([
             'Nombre' => 'required|string|max:100',
-            'Correo' => 'required|email|unique:empleados',
+            'Email' => 'required|email|unique:empleados',
             'Contrasena' => 'required|string|min:6',
             'Telefono' => 'nullable|string|max:20',
             'Direccion' => 'nullable|string',

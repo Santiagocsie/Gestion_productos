@@ -13,7 +13,7 @@ class DetalleProducto extends Model
     protected $primaryKey = 'Detalle_id';
     public $timestamps = false;
 
-    protected $fillable = ['Empleado_id', 'Producto_id', 'Categoria_id', 'Descripción', 'Estado', 'Precio', 'stock', 'Imagen_Url'];
+    protected $fillable = ['Empleado_id', 'Producto_id', 'Categoria_id'];
 
     public function empleado()
     {
