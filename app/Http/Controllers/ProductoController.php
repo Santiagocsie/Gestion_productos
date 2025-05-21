@@ -107,33 +107,37 @@ public function create()
 
 public function store(Request $request)
 {
+    // Validación de datos
     $request->validate([
-        'Codigo_prod' => 'required|unique:producto,Codigo_prod',
-        'Nombre' => 'required',
-        'Estado' => 'required',
-        'Precio' => 'required|numeric',
-        'stock' => 'required|integer',
-        'Descripcion' => 'nullable',
+        'Codigo_prod' => 'required|string|max:255|unique:producto,Codigo_prod',
+        'Nombre' => 'required|string|max:255',
+        'Precio' => 'required|numeric|min:0',
+        'stock' => 'required|integer|min:0',
+        'Descripcion' => 'nullable|string',
         'categorias' => 'required|array',
     ]);
 
     // Obtener el ID del empleado autenticado
-    $empleadoId = Auth::user()->Empleado_id; // Ajusta esto si tu modelo de usuario usa otro campo
+    $empleadoId = Auth::user()->Empleado_id; 
 
-    // Crear el producto
+    // Determinar el estado según el stock
+    $estado = $request->stock == 0 ? 'Agotado' : 'Disponible';
+
+    // Crear el producto con la fecha de creación
     $producto = Producto::create([
         'Codigo_prod' => $request->Codigo_prod,
         'Nombre' => $request->Nombre,
-        'Estado' => $request->Estado,
+        'Estado' => $estado, // Se asigna automáticamente
         'Precio' => $request->Precio,
         'stock' => $request->stock,
-        'Descripcion' => $request->Descripcion
+        'Descripcion' => $request->Descripcion,
+        'created_at' => now() // Guarda la fecha actual
     ]);
 
-    // Guardar categorías en la tabla Detalle_Producto con el Empleado_id
+    // Asociar las categorías en Detalle_Producto
     foreach ($request->categorias as $categoria_id) {
         DetalleProducto::create([
-            'Empleado_id' => $empleadoId, // Aquí se almacena el usuario que creó el producto
+            'Empleado_id' => $empleadoId,
             'Producto_id' => $producto->Producto_id,
             'Categoria_id' => $categoria_id
         ]);
@@ -162,34 +166,38 @@ public function store(Request $request)
     
     public function update(Request $request, $id)
     {
+        // Validación
         $request->validate([
-            'Codigo_prod' => 'required|unique:producto,Codigo_prod,' . $id . ',Producto_id',
-            'Nombre' => 'required',
-            'Estado' => 'required',
+            'Codigo_prod' => 'required|string|max:255|unique:producto,Codigo_prod,' . $id . ',Producto_id',
+            'Nombre' => 'required|string|max:255',
             'Precio' => 'required|numeric|min:0',
             'stock' => 'required|integer|min:0',
             'Descripcion' => 'nullable|string',
             'categorias' => 'required|array'
         ]);
-        $empleadoId = Auth::user()->Empleado_id; // Ajusta esto si tu modelo de usuario usa otro campo
-
+    
+        $empleadoId = Auth::user()->Empleado_id;
+    
         $producto = Producto::findOrFail($id);
+    
+        // Determinar estado automáticamente
+        $estado = $request->stock == 0 ? 'Agotado' : 'Disponible';
+    
+        // Actualizar el producto
         $producto->update([
             'Codigo_prod' => $request->Codigo_prod,
             'Nombre' => $request->Nombre,
-            'Estado' => $request->Estado,
+            'Estado' => $estado, // Estado actualizado automáticamente
             'Precio' => $request->Precio,
             'stock' => $request->stock,
             'Descripcion' => $request->Descripcion,
-            'Empleado_id' => Auth::user()->Empleado_id // Asegurar que el ID del empleado se guarde
         ]);
     
-        // Actualizar categorías en la tabla detalle_producto
-        DetalleProducto::where('Producto_id', $id)->delete(); // Eliminar asociaciones anteriores
-    
+        // Actualizar categorías
+        DetalleProducto::where('Producto_id', $id)->delete();
         foreach ($request->categorias as $categoria_id) {
             DetalleProducto::create([
-                'Empleado_id' => $empleadoId, // Aquí se almacena el usuario que creó el producto
+                'Empleado_id' => $empleadoId,
                 'Producto_id' => $id,
                 'Categoria_id' => $categoria_id
             ]);
@@ -197,6 +205,7 @@ public function store(Request $request)
     
         return redirect()->route('admin.productos.index')->with('success', 'Producto actualizado correctamente.');
     }
+    
     
 
     public function destroy($id)
@@ -207,13 +216,27 @@ public function store(Request $request)
         return redirect()->route('admin.productos.index')->with('success', 'Producto eliminado correctamente.');
     }
 
-    public function actualizarStock(Request $request, $id)
-    {
-        $producto = Producto::findOrFail($id);
-        $producto->update(['stock' => $request->input('stock')]);
+public function actualizarStock(Request $request, $id)
+{
+    $producto = Producto::findOrFail($id);
 
-        return redirect()->route('gerente.productos.index')->with('success', 'Stock actualizado correctamente');
+    // Actualizar stock según el valor ingresado por el gerente
+    $producto->stock = $request->input('stock');
+
+    // Verificar el estado según el stock
+    if ($producto->stock <= 0) {
+        $producto->stock = 0;
+        $producto->estado = 'Agotado';
+    } else {
+        $producto->estado = 'Disponible';
     }
+
+    // Guardar cambios en la BD
+    $producto->save();
+
+    return redirect()->back()->with('success', 'Stock actualizado correctamente.');
+}
+
 
     public function reducirStock(Request $request, $id)
     {

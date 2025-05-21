@@ -23,43 +23,49 @@
         <a href="{{ route('gerente.productos.index') }}" class="btn btn-secondary ms-2">Limpiar</a>
     </form>
 
-    
-
     <!-- Tabla de productos -->
-     
-    <table class="table table-bordered ">
-        <thead class="table-dark">
-            <tr>
-                <th>Código</th>
-                <th>Nombre</th>
-                <th>Categoría</th>
-                <th>Stock</th>
-                <th>Modificar Stock</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach ($productos as $producto)
-            <tr>
-                <td>{{ $producto->Codigo_prod }}</td>
-                <td>{{ $producto->Nombre }}</td>
-                <td>
-                        @foreach ($producto->categorias as $categoria)
-                            <span class="badge bg-primary">{{ $categoria->Nombre_categoria }}</span>
-                        @endforeach
-                    </td>
-                <td>{{ $producto->stock }}</td>
-                <td>
-                    <!-- Formulario para modificar stock -->
-                    <form action="{{ route('productos.actualizarStock', $producto->Producto_id) }}" method="POST">
-                        @csrf
-                        @method('PUT')
-                        <input type="number" name="stock" value="{{ $producto->stock }}" min="0" class="form-control" required>
-                        <button type="submit" class="btn btn-warning btn-sm mt-1">Actualizar Stock</button>
-                    </form>
-                </td>
-            </tr>
-            @endforeach
-        </tbody>
-    </table>
+<table class="table table-bordered">
+    <thead class="table-dark">
+        <tr>
+            <th>Código</th>
+            <th>Nombre</th>
+            <th>Categoría</th>
+            <th>Stock</th>
+            <th>Estado</th>
+            <th>Modificar Stock</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach ($productos as $producto)
+        <tr>
+            <td>{{ $producto->Codigo_prod }}</td>
+            <td>{{ $producto->Nombre }}</td>
+            <td>
+                @foreach ($producto->categorias as $categoria)
+                    <span class="badge bg-primary">{{ $categoria->Nombre_categoria }}</span>
+                @endforeach
+            </td>
+            <td>{{ $producto->stock }}</td>
+            <td>
+                @if($producto->stock > 0)
+                    <span class="badge bg-success">Disponible</span>
+                @else
+                    <span class="badge bg-danger">Agotado</span>
+                @endif
+            </td>   
+            <td>
+                <!-- Formulario para modificar stock -->
+                <form action="{{ route('productos.actualizarStock', $producto->Producto_id) }}" method="POST">
+                    @csrf
+                    @method('PUT')
+                    <input type="number" name="stock" value="{{ $producto->stock }}" min="0" class="form-control" required>
+                    <button type="submit" class="btn btn-warning btn-sm mt-1">Actualizar Stock</button>
+                </form>
+            </td>
+        </tr>
+        @endforeach
+    </tbody>
+</table>
+
 </div>
 @endsection

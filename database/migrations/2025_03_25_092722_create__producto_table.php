@@ -21,7 +21,6 @@ return new class extends Migration
             $table->decimal('Precio', 10, 2)->default(0.00);
             $table->integer('stock');
             $table->text('Descripcion')->nullable();
-            $table->timestamps();
         });
     }
     
