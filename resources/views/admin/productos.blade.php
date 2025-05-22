@@ -125,7 +125,7 @@
     <a href="{{ route('admin.productos.reporte-pdf') }}" class="btn btn-danger">
         📄 Descargar Reporte PDF
     </a>
-    <a href="{{ route('admin.empleados.index') }}" class="btn btn-outline-primary">
+    <a href="{{ route('admin.dashboard') }}" class="btn btn-outline-primary">
         Volver al panel 
     </a>
 </div>

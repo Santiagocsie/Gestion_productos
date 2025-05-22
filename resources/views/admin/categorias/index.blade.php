@@ -88,7 +88,7 @@
                 </table>
             </div>
 
-            <a href="{{ route('admin.empleados.index') }}" class="btn btn-outline-primary mt-3">
+            <a href="{{ route('admin.dashboard') }}" class="btn btn-outline-primary mt-3">
                 Volver al Panel
             </a>
         </div>

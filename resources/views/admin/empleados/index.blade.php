@@ -95,11 +95,16 @@
                                 <div class="d-flex justify-content-center gap-2">
                                     <a href="{{ route('admin.empleados.edit', $emp->Empleado_id) }}" class="btn btn-warning btn-sm">✏️</a>
 
-                                    <form action="{{ route('admin.empleados.destroy', $emp->Empleado_id) }}" method="POST" onsubmit="return confirm('¿Eliminar este empleado?');">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="btn btn-danger btn-sm">🗑️</button>
-                                    </form>
+                                    @if(Auth::id() !== $emp->Empleado_id)
+    <form action="{{ route('admin.empleados.destroy', $emp->Empleado_id) }}" method="POST" onsubmit="return confirm('¿Eliminar este empleado?');">
+        @csrf
+        @method('DELETE')
+        <button type="submit" class="btn btn-danger btn-sm">🗑️</button>
+    </form>
+@else
+    <button class="btn btn-danger btn-sm" disabled title="No puedes eliminar tu propio usuario">🗑️</button>
+@endif
+
                                 </div>
                             </td>
                         </tr>

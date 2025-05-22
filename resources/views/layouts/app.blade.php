@@ -82,20 +82,47 @@
             </div>
         </nav>
 
-        <!-- Offcanvas sidebar -->
-        <div class="offcanvas offcanvas-end" tabindex="-1" id="userSidebar" aria-labelledby="userSidebarLabel">
-            <div class="offcanvas-header">
-                <h5 class="offcanvas-title" id="userSidebarLabel">Hola, {{ Auth::user()->Nombre }}</h5>
-                <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Cerrar"></button>
-            </div>
-            <div class="offcanvas-body d-flex flex-column justify-content-start">
-                <a href="{{ route('password.edit') }}" class="btn btn-primary btn-sidebar">Cambiar contraseña</a>
 
-                <form method="POST" action="{{ route('logout') }}">
-                    @csrf
-                    <button type="submit" class="btn btn-danger btn-sidebar">Cerrar sesión</button>
-                </form>
-            </div>
+        
+        <!-- Offcanvas sidebar -->
+        <div class="offcanvas offcanvas-end" tabindex="-1" id="userSidebar"
+     aria-labelledby="userSidebarLabel"
+     data-bs-backdrop="static"
+     data-bs-keyboard="false">
+    <div class="offcanvas-header">
+        <h5 class="offcanvas-title" id="userSidebarLabel">Hola, {{ Auth::user()->Nombre }}</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Cerrar"></button>
+    </div>
+
+            <div class="offcanvas-body d-flex flex-column justify-content-start">
+    @php
+        $rol = auth()->user()->cargo->Rol;
+        $dashboardRoute = match ($rol) {
+            'administrador' => route('admin.dashboard'),
+            'gerente' => route('gerente.dashboard'),
+            default => route('empleado.dashboard'),
+        };
+    @endphp
+
+    @if (Request::is('cambiar-contrasena'))
+        <!-- Solo en la vista de cambio de contraseña -->
+        <a href="{{ $dashboardRoute }}" class="btn btn-success btn-sidebar">Ir al panel</a>
+    @elseif (Request::is('admin/dashboard') || Request::is('gerente/dashboard') || Request::is('empleado/dashboard'))
+        <!-- Solo en el dashboard -->
+        <a href="{{ route('password.edit') }}" class="btn btn-primary btn-sidebar">Cambiar contraseña</a>
+    @else
+        <!-- En cualquier otra vista -->
+        <a href="{{ route('password.edit') }}" class="btn btn-primary btn-sidebar">Cambiar contraseña</a>
+        <a href="{{ $dashboardRoute }}" class="btn btn-success btn-sidebar">Ir al panel</a>
+    @endif
+
+    <form method="POST" action="{{ route('logout') }}">
+        @csrf
+        <button type="submit" class="btn btn-danger btn-sidebar">Cerrar sesión</button>
+    </form>
+</div>
+
+
         </div>
         @endif
 

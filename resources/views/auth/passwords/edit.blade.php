@@ -3,6 +3,28 @@
 @section('title', 'Cambiar Contraseña')
 
 @section('content')
+@if (session('status') === 'contraseña_actualizada')
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const rol = "{{ session('rol') }}";
+
+            let dashboardURL = "/";
+            if (rol === "administrador") {
+                dashboardURL = "{{ route('admin.dashboard') }}";
+            } else if (rol === "gerente") {
+                dashboardURL = "{{ route('gerente.dashboard') }}";
+            } else {
+                dashboardURL = "{{ route('empleado.dashboard') }}";
+            }
+
+            // Mostrar alerta con confirmación
+            if (confirm("✅ Contraseña actualizada con éxito.\n\nPresiona Aceptar para volver al panel.")) {
+                window.location.href = dashboardURL;
+            }
+        });
+    </script>
+@endif
+
 
 <script>
     window.history.pushState(null, "", window.location.href);
@@ -95,7 +117,20 @@
                 </div>
             </form>
 
-            <a href="{{ url()->previous() }}" class="btn btn-outline-light mt-3">🔙 Volver</a>
+@php
+    $rol = auth()->user()->cargo->Rol;
+
+    $rutaDashboard = match($rol) {
+        'administrador' => route('admin.dashboard'),
+        'gerente' => route('gerente.dashboard'),
+        'empleado' => route('empleado.dashboard'),
+        default => route('login'), // Por si acaso
+    };
+@endphp
+
+<a href="{{ $rutaDashboard }}" class="btn btn-outline-light mt-3">🔙 Volver al Panel</a>
+
+
         </div>
     </div>
 </div>
