@@ -46,7 +46,7 @@
             <!-- Barra de búsqueda -->
             <form action="{{ route('admin.productos.index') }}" method="GET" class="row g-3 mb-4">
                 <div class="col-md-6">
-                    <input type="text" name="search" class="form-control" placeholder="🔍 Buscar producto..." value="{{ request('search') }}">
+                    <input type="text" name="search" class="form-control" placeholder="🔍 Buscar producto... (Ej: nombre,código,categoria)" value="{{ request('search') }}">
                 </div>
 
                 @if(isset($categorias) && $categorias->count() > 0)
@@ -87,7 +87,7 @@
                         <tr>
                             <td>{{ $producto->Codigo_prod }}</td>
                             <td>{{ $producto->Nombre }}</td>
-                            <td><span class="badge bg-{{ $producto->Estado == 'Activo' ? 'success' : 'danger' }}">{{ $producto->Estado }}</span></td>
+                            <td><span class="badge bg-{{ $producto->Estado == 'Disponible' ? 'success' : 'danger' }}">{{ $producto->Estado }}</span></td>
                             <td>${{ number_format($producto->Precio, 2) }}</td>
                             <td>{{ $producto->stock }}</td>
                             <td>
@@ -116,12 +116,15 @@
                     </tbody>
                 </table>
             </div>
-            <a href="{{ route('admin.productos.reporte-pdf') }}" class="btn btn-danger mb-3">
-                📄 Descargar Reporte PDF
-            </a>
-            <a href="{{ route('admin.empleados.index') }}" class="btn btn-outline-primary">
-                🏠 Volver al Dashboard
-            </a>
+            <div class="d-flex gap-3 mb-3">
+    <a href="{{ route('admin.productos.reporte-pdf') }}" class="btn btn-danger">
+        📄 Descargar Reporte PDF
+    </a>
+    <a href="{{ route('admin.empleados.index') }}" class="btn btn-outline-primary">
+        🏠 Volver al Dashboard
+    </a>
+</div>
+
 
 
             <!-- Paginación -->
