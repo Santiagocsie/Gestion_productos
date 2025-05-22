@@ -63,7 +63,7 @@
                     <a href="{{ route('gerente.productos.index') }}" class="btn btn-secondary w-100">Limpiar</a>
                 </div>
                 <a href="{{ route('gerente.empleados.index') }}" class="btn btn-outline-primary">
-                    🏠 Volver al Panel del gerente
+                    Volver al Panel 
                 </a>
             </form>
             

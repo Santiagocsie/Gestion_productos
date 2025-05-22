@@ -23,6 +23,39 @@
     <!-- Scripts -->
     @vite(['resources/sass/app.scss', 'resources/js/app.js'])
 </head>
+<style>
+    .dropdown-menu.logout-style {
+        border-radius: 10px;
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+        min-width: 180px;
+        padding: 0.5rem;
+        animation: fadeIn 0.2s ease-in-out;
+    }
+
+    .dropdown-menu.logout-style .dropdown-item {
+        border-radius: 5px;
+        padding: 10px 15px;
+        transition: all 0.2s;
+        font-weight: 500;
+        color: #212529;
+    }
+
+    .dropdown-menu.logout-style .dropdown-item:hover {
+        background-color: #f8f9fa;
+        color: #000;
+    }
+
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(-5px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+</style>
 <body>
     <div id="app">
         @if (!Request::is('login'))
@@ -55,11 +88,10 @@
                                     {{ Auth::user()->Nombre }}
                                 </a>
 
-                                <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                                <div class="dropdown-menu dropdown-menu-end logout-style" aria-labelledby="navbarDropdown">
                                     <a class="dropdown-item" href="{{ route('logout') }}"
-                                       onclick="event.preventDefault();
-                                                 document.getElementById('logout-form').submit();">
-                                        {{ __('Logout') }}
+                                        onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                                        Cerrar sesión
                                     </a>
 
                                     <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">

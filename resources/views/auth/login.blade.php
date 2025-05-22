@@ -24,11 +24,11 @@
     </div>
 
 
-    <h5 class="fw-normal mb-3 pb-3" style="letter-spacing: 1px;">Sign into your account</h5>
+    <h5 class="fw-normal mb-3 pb-3" style="letter-spacing: 1px;">Inicia sesion con tu cuenta</h5>
 
     <!-- EMAIL -->
     <div class="form-outline mb-4">
-        <label for="email" class="form-label">{{ __('Email Address') }}</label>
+        <label for="email" class="form-label">{{ __('Correo electronico') }}</label>
         <input id="email" type="email" class="form-control form-control-lg @error('email') is-invalid @enderror"
             name="email" value="{{ old('email') }}" required autocomplete="email" autofocus>
         @error('email')
@@ -40,7 +40,7 @@
 
     <!-- PASSWORD -->
     <div class="form-outline mb-4">
-        <label for="password" class="form-label">{{ __('Password') }}</label>
+        <label for="password" class="form-label">{{ __('Constraseña') }}</label>
         <input id="password" type="password" class="form-control form-control-lg @error('password') is-invalid @enderror"
             name="password" required autocomplete="current-password">
         @error('password')

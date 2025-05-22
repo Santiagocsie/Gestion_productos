@@ -98,12 +98,12 @@
                             <td>
                                 <div class="d-flex justify-content-center gap-2">
                                     <a href="{{ route('admin.productos.edit', $producto->Producto_id) }}" class="btn btn-warning btn-sm">
-                                        ✏️ Editar
+                                        ✏️ 
                                     </a>
                                     <form action="{{ route('admin.productos.destroy', $producto->Producto_id) }}" method="POST" onsubmit="return confirm('¿Estás seguro de eliminar este producto?')">
                                         @csrf
                                         @method('DELETE')
-                                        <button class="btn btn-danger btn-sm">🗑️ Eliminar</button>
+                                        <button class="btn btn-danger btn-sm">🗑️ </button>
                                     </form>
                                 </div>
                             </td>
@@ -121,7 +121,7 @@
         📄 Descargar Reporte PDF
     </a>
     <a href="{{ route('admin.empleados.index') }}" class="btn btn-outline-primary">
-        🏠 Volver al Dashboard
+        Volver al panel 
     </a>
 </div>
 
