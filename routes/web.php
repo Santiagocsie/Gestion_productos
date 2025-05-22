@@ -21,6 +21,8 @@ Route::resource('empleados', EmpleadoController::class);
 
 // Rutas para ADMINISTRADORES
 Route::middleware(['auth', 'rol:administrador'])->group(function () {
+
+    //dashboard admin
     Route::get('/admin/productos/dashboard', [AdminController::class, 'index'])->name('admin.empleados.index');
     // Rutas para Admin
 
@@ -48,6 +50,10 @@ Route::delete('/productos/{producto}', [ProductoController::class, 'destroy'])->
 // Rutas para GERENTES
 Route::middleware(['auth', 'rol:gerente'])->group(function () {
     Route::get('/gerente/productos', [GerenteController::class, 'index'])->name('gerente.productos');
+
+    // Dashboard Gerente
+    Route::get('/gerente/dashboard', [GerenteController::class, 'index'])->name('gerente.dashboard');
+
     // Rutas para gerente
 Route::get('/gerente/productos', [ProductoController::class, 'gerenteIndex'])->name('gerente.productos');
 Route::put('/productos/{id}/actualizar-stock', [ProductoController::class, 'actualizarStock'])->name('productos.actualizarStock');
@@ -57,6 +63,11 @@ Route::get('/gerente/productos', [ProductoController::class, 'indexgerente'])->n
 // Rutas para EMPLEADOS
 Route::middleware(['auth', 'rol:empleado'])->group(function () {
     Route::get('/empleado/productos', [EmplController::class, 'index'])->name('empleado.productos');
+
+// Dashboard Empleado
+    Route::get('/empleado/dashboard', [EmplController::class, 'index'])
+         ->name('empleado.dashboard');
+
     // Rutas para empleado
 Route::get('/empleado/productos', [ProductoController::class, 'empleadoIndex'])->name('empleado.productos');
 Route::put('/productos/{id}/reducir-stock', [ProductoController::class, 'reducirStock'])->name('productos.reducirStock');
