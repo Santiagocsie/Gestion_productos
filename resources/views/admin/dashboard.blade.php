@@ -18,7 +18,9 @@
         border-radius: 15px;
     }
 
-    .btn-outline-success, .btn-outline-primary, .btn-outline-info {
+    .btn-outline-success,
+    .btn-outline-primary,
+    .btn-outline-info {
         font-weight: bold;
     }
 
@@ -37,9 +39,9 @@
         <p class="text-center">No tienes un rol asignado.</p>
     @endif
 
-    <div class="row mt-4">
+    <div class="row mt-4 g-4 justify-content-center">
         <div class="col-md-3">
-            <div class="card bg-primary text-white mb-4">
+            <div class="card bg-primary text-white">
                 <div class="card-header">👥 Empleados</div>
                 <div class="card-body">
                     <h5 class="card-title text-center">{{ $totalEmpleados }}</h5>
@@ -49,7 +51,7 @@
         </div>
         
         <div class="col-md-3">
-            <div class="card bg-success text-white mb-4">
+            <div class="card bg-success text-white">
                 <div class="card-header">🛒 Productos</div>
                 <div class="card-body">
                     <h5 class="card-title text-center">{{ $totalProductos }}</h5>
@@ -59,7 +61,7 @@
         </div>
 
         <div class="col-md-3">
-            <div class="card bg-info text-white mb-4">
+            <div class="card bg-info text-white">
                 <div class="card-header">📂 Categorías</div>
                 <div class="card-body">
                     <h5 class="card-title text-center">{{ $totalCategorias }}</h5>
@@ -69,7 +71,7 @@
         </div>
 
         <div class="col-md-3">
-            <div class="card bg-warning text-dark mb-4">
+            <div class="card bg-warning text-dark">
                 <div class="card-header">✅ Disponibles</div>
                 <div class="card-body">
                     <h5 class="card-title text-center">{{ $productosActivos }}</h5>
@@ -81,9 +83,13 @@
 
     {{-- Navegación rápida --}}
     <div class="text-center mt-5">
-        <h4>Navegación rápida</h4>
-        <a href="{{ route('admin.productos.index') }}" class="btn btn-outline-success me-2">🛒 Gestión de Productos</a>
-        {{-- Agrega más botones aquí si tienes más rutas --}}
+        <h4>Accesos Rápidos</h4>
+        <a href="{{ route('admin.productos.index') }}" class="btn btn-outline-success me-2">
+            🛒 Gestión de Productos
+        </a>
+        <a href="{{ route('admin.categorias.index') }}" class="btn btn-outline-info">
+            📂 Gestión de Categorías
+        </a>
     </div>
 </div>
 

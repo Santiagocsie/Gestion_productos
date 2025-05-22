@@ -46,6 +46,15 @@ Route::put('/admin/productos/{id}', [ProductoController::class, 'update'])->name
 Route::get('/admin/productos', [ProductoController::class, 'index'])->name('admin.productos.index');
 
 Route::delete('/productos/{producto}', [ProductoController::class, 'destroy'])->name('productos.destroy');
+
+    Route::get  ('/admin/categorias',           [CategoriaController::class, 'indexcrud'])->name('admin.categorias.index');
+    Route::post ('/admin/categorias',           [CategoriaController::class, 'storecrud'])->name('admin.categorias.store');
+    Route::put  ('/admin/categorias/{id}',      [CategoriaController::class, 'updatecrud'])->name('admin.categorias.update');
+    Route::delete('/admin/categorias/{id}',      [CategoriaController::class, 'destroycrud'])->name('admin.categorias.destroy');
+    Route::get('/admin/categorias/{id}', [CategoriaController::class, 'editcrud'])->name('admin.categorias.edit');
+
+
+
 });
 
 // Rutas para GERENTES

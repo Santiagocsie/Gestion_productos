@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
@@ -40,10 +39,16 @@
         color: #212529;
     }
 
-    .dropdown-menu.logout-style .dropdown-item:hover {
-        background-color: #f8f9fa;
-        color: #000;
-    }
+    
+        /* Botón “Cerrar sesión” destacado */
+        .dropdown-menu.logout-style .dropdown-item.logout-btn {
+            background-color: #dc3545;
+            color: #fff;
+        }
+        .dropdown-menu.logout-style .dropdown-item.logout-btn:hover {
+            background-color: #c82333;
+            color: #fff;
+        }
 
     @keyframes fadeIn {
         from {
@@ -89,10 +94,11 @@
                                 </a>
 
                                 <div class="dropdown-menu dropdown-menu-end logout-style" aria-labelledby="navbarDropdown">
-                                    <a class="dropdown-item" href="{{ route('logout') }}"
-                                        onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-                                        Cerrar sesión
-                                    </a>
+                                    <a class="dropdown-item logout-btn" href="{{ route('logout') }}"
+    onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+    <i class="bi bi-box-arrow-right me-1"></i> Cerrar sesión
+</a>
+
 
                                     <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
                                         @csrf

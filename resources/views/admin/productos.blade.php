@@ -91,10 +91,15 @@
                             <td>${{ number_format($producto->Precio, 2) }}</td>
                             <td>{{ $producto->stock }}</td>
                             <td>
-                                @foreach ($producto->categorias as $categoria)
-                                <span class="badge bg-primary">{{ $categoria->Nombre_categoria }}</span>
-                                @endforeach
-                            </td>
+    @if ($producto->categorias->isEmpty())
+        <span class="badge bg-secondary">Sin categorizar</span>
+    @else
+        @foreach ($producto->categorias as $categoria)
+            <span class="badge bg-primary">{{ $categoria->Nombre_categoria }}</span>
+        @endforeach
+    @endif
+</td>
+
                             <td>
                                 <div class="d-flex justify-content-center gap-2">
                                     <a href="{{ route('admin.productos.edit', $producto->Producto_id) }}" class="btn btn-warning btn-sm">

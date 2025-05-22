@@ -85,10 +85,15 @@
                             <td>{{ $producto->Codigo_prod }}</td>
                             <td>{{ $producto->Nombre }}</td>
                             <td>
-                                @foreach ($producto->categorias as $categoria)
-                                    <span class="badge bg-primary">{{ $categoria->Nombre_categoria }}</span>
-                                @endforeach
-                            </td>
+    @if ($producto->categorias->isEmpty())
+        <span class="badge bg-secondary">Sin categorizar</span>
+    @else
+        @foreach ($producto->categorias as $categoria)
+            <span class="badge bg-primary">{{ $categoria->Nombre_categoria }}</span>
+        @endforeach
+    @endif
+</td>
+
                             <td class="{{ $producto->stock < 20 ? 'text-danger fw-bold' : '' }}">
                                 {{ $producto->stock }}
                                 @if($producto->stock < 20)
