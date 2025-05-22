@@ -26,8 +26,8 @@
 <body>
     <div id="app">
         @if (!Request::is('login'))
-        <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
-            <div class="container">
+        <nav class="navbar navbar-expand-md navbar-dark" style="background-color: #81c6f7;">
+            <div class="container-fluid">
                 <a class="navbar-brand" href="{{ url('/') }}">
                     {{ config('app.name') }}
                 </a>
