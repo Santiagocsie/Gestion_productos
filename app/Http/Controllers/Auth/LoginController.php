@@ -34,7 +34,7 @@ class LoginController extends Controller
             if ($cargo) {
                 // Redirigir según el rol
                 if ($cargo->Rol === 'administrador') {
-                    return redirect()->route('admin.productos.index');
+                    return redirect()->route('admin.empleados.index');
                 } elseif ($cargo->Rol === 'gerente') {
                     return redirect()->route('gerente.productos.index');
                 } elseif ($cargo->Rol === 'empleado') {

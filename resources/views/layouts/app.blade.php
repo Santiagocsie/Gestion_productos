@@ -15,6 +15,8 @@
     <link rel="stylesheet" href="resources/css/app.css">
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.bunny.net">
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
     
     <link href="https://fonts.bunny.net/css?family=Nunito" rel="stylesheet">
 

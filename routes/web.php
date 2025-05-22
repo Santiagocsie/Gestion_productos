@@ -21,8 +21,11 @@ Route::resource('empleados', EmpleadoController::class);
 
 // Rutas para ADMINISTRADORES
 Route::middleware(['auth', 'rol:administrador'])->group(function () {
-    Route::get('/admin/productos', [AdminController::class, 'index'])->name('admin.productos');
+    Route::get('/admin/productos/dashboard', [AdminController::class, 'index'])->name('admin.empleados.index');
     // Rutas para Admin
+
+    Route::get('/admin/productos/reporte-pdf', [AdminController::class, 'generarReportePDF'])->name('admin.productos.reporte-pdf');
+
     Route::get('/admin/productos', [ProductoController::class, 'adminIndex'])->name('admin.productos');
     Route::get('/admin/productos/create', [ProductoController::class, 'create'])->name('admin.productos.create');
     Route::get('/admin/productos/{id}/edit', [ProductoController::class, 'edit'])->name('admin.productos.edit');
