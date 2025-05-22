@@ -61,6 +61,9 @@
                     <button type="submit" class="btn btn-primary me-2 w-100">Buscar</button>
                     <a href="{{ route('empleado.productos.index') }}" class="btn btn-secondary w-100">Limpiar</a>
                 </div>
+                <a href="{{ route('empleado.empleados.index') }}" class="btn btn-outline-primary">
+                    🏠 Volver al Panel del empleado
+                </a>
             </form>
 
             <!-- Tabla de productos -->

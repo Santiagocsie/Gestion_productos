@@ -52,16 +52,21 @@
                         <option value="{{ $categoria->Categoria_id }}" {{ request('categoria') == $categoria->Categoria_id ? 'selected' : '' }}>
                             {{ $categoria->Nombre_categoria }}
                         </option>
+                        
                         @endforeach
                     </select>
                 </div>
                 @endif
-
+                
                 <div class="col-md-2 d-flex">
                     <button type="submit" class="btn btn-success me-2 w-100">Buscar</button>
                     <a href="{{ route('gerente.productos.index') }}" class="btn btn-secondary w-100">Limpiar</a>
                 </div>
+                <a href="{{ route('gerente.empleados.index') }}" class="btn btn-outline-primary">
+                    🏠 Volver al Panel del gerente
+                </a>
             </form>
+            
 
             <!-- Tabla de productos -->
             <div class="table-responsive">
