@@ -21,55 +21,39 @@
 
     <!-- Scripts -->
     @vite(['resources/sass/app.scss', 'resources/js/app.js'])
+
+    <style>
+        /* Opcional: darle un poco de estilo personalizado al offcanvas */
+        .offcanvas-end {
+            width: 250px;
+            background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)),
+            url("https://mdbootstrap.com/img/new/textures/full/171.jpg") no-repeat center center fixed;
+        background-size: cover;
+        color: white;
+        }
+
+        .offcanvas-header {
+            border-bottom: 1px solid #dee2e6;
+        }
+        
+        .btn-sidebar {
+            margin: 0.75rem auto;
+            display: block;
+            width: 80%;
+            font-weight: 600;
+        }
+    </style>
 </head>
-<style>
-    .dropdown-menu.logout-style {
-        border-radius: 10px;
-        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
-        min-width: 180px;
-        padding: 0.5rem;
-        animation: fadeIn 0.2s ease-in-out;
-    }
-
-    .dropdown-menu.logout-style .dropdown-item {
-        border-radius: 5px;
-        padding: 10px 15px;
-        transition: all 0.2s;
-        font-weight: 500;
-        color: #212529;
-    }
-
-    
-        /* Botón “Cerrar sesión” destacado */
-        .dropdown-menu.logout-style .dropdown-item.logout-btn {
-            background-color: #dc3545;
-            color: #fff;
-        }
-        .dropdown-menu.logout-style .dropdown-item.logout-btn:hover {
-            background-color: #c82333;
-            color: #fff;
-        }
-
-    @keyframes fadeIn {
-        from {
-            opacity: 0;
-            transform: translateY(-5px);
-        }
-        to {
-            opacity: 1;
-            transform: translateY(0);
-        }
-    }
-</style>
 <body>
     <div id="app">
         @if (!Request::is('login'))
         <nav class="navbar navbar-expand-md navbar-dark" style="background-color: #81c6f7;">
             <div class="container-fluid">
-                <a class="navbar-brand">
+                <a class="navbar-brand" href="#">
                     {{ config('app.name') }}
                 </a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" 
+                    aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
                     <span class="navbar-toggler-icon"></span>
                 </button>
 
@@ -79,7 +63,6 @@
 
                     <!-- Right Side Of Navbar -->
                     <ul class="navbar-nav ms-auto">
-                        <!-- Authentication Links -->
                         @guest
                             @if (Route::has('login'))
                                 <li class="nav-item">
@@ -87,29 +70,33 @@
                                 </li>
                             @endif
                         @else
-                            <li class="nav-item dropdown">
-                                <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button"
-                                    data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                            <li class="nav-item">
+                                <!-- Botón que abre la barra lateral -->
+                                <a class="nav-link" href="#" data-bs-toggle="offcanvas" data-bs-target="#userSidebar" aria-controls="userSidebar">
                                     {{ Auth::user()->Nombre }}
                                 </a>
-
-                                <div class="dropdown-menu dropdown-menu-end logout-style" aria-labelledby="navbarDropdown">
-                                    <a class="dropdown-item logout-btn" href="{{ route('logout') }}"
-    onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-    <i class="bi bi-box-arrow-right me-1"></i> Cerrar sesión
-</a>
-
-
-                                    <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
-                                        @csrf
-                                    </form>
-                                </div>
                             </li>
                         @endguest
                     </ul>
                 </div>
             </div>
         </nav>
+
+        <!-- Offcanvas sidebar -->
+        <div class="offcanvas offcanvas-end" tabindex="-1" id="userSidebar" aria-labelledby="userSidebarLabel">
+            <div class="offcanvas-header">
+                <h5 class="offcanvas-title" id="userSidebarLabel">Hola, {{ Auth::user()->Nombre }}</h5>
+                <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Cerrar"></button>
+            </div>
+            <div class="offcanvas-body d-flex flex-column justify-content-start">
+                <a href="{{ route('password.edit') }}" class="btn btn-primary btn-sidebar">Cambiar contraseña</a>
+
+                <form method="POST" action="{{ route('logout') }}">
+                    @csrf
+                    <button type="submit" class="btn btn-danger btn-sidebar">Cerrar sesión</button>
+                </form>
+            </div>
+        </div>
         @endif
 
         @if(session('error'))
@@ -122,6 +109,9 @@
             @yield('content')
         </main>
     </div>
-</body>
 
+    <!-- Bootstrap JS y dependencias -->
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.7/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
+</body>
 </html>

@@ -90,6 +90,9 @@
         <a href="{{ route('admin.categorias.index') }}" class="btn btn-outline-info">
             📂 Gestión de Categorías
         </a>
+        <a href="{{ route('admin.empleados.index') }}" class="btn btn-outline-primary">
+        👥 Gestión de Usuarios
+        </a>
     </div>
 </div>
 

@@ -11,6 +11,7 @@ use App\Http\Controllers\DetalleProductoController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\GerenteController;
 use App\Http\Controllers\EmplController;
+use App\Http\Controllers\PasswordController;
 
 Route::resource('cargos', CargoController::class);
 Route::resource('contratos', ContratoController::class);
@@ -23,7 +24,7 @@ Route::resource('empleados', EmpleadoController::class);
 Route::middleware(['auth', 'rol:administrador'])->group(function () {
 
     //dashboard admin
-    Route::get('/admin/productos/dashboard', [AdminController::class, 'index'])->name('admin.empleados.index');
+    Route::get('/admin/productos/dashboard', [AdminController::class, 'index'])->name('admin.dashboard');
     
     // Rutas para Admin
 
@@ -53,7 +54,17 @@ Route::delete('/productos/{producto}', [ProductoController::class, 'destroy'])->
     Route::delete('/admin/categorias/{id}',      [CategoriaController::class, 'destroycrud'])->name('admin.categorias.destroy');
     Route::get('/admin/categorias/{id}', [CategoriaController::class, 'editcrud'])->name('admin.categorias.edit');
 
+    Route::get('/admin/empleados/create', [EmpleadoController::class, 'create'])->name('admin.empleados.create');
+    Route::post('/admin/empleados', [EmpleadoController::class, 'store'])->name('admin.empleados.store');
+    Route::get('/admin/empleados', [EmpleadoController::class, 'indexcrud'])->name('admin.empleados.index');
+    Route::get('empleados/{id}/edit', [EmpleadoController::class, 'edit'])->name('admin.empleados.edit');
+    Route::put('empleados/{id}', [EmpleadoController::class, 'update'])->name('admin.empleados.update');
+    Route::delete('empleados/{id}', [EmpleadoController::class, 'destroy'])->name('admin.empleados.destroy');
+    Route::get('/admin/empleados', [EmpleadoController::class, 'buscar'])->name('admin.empleados.index');
+    Route::get('/admin/empleados/reporte-pdf', [EmpleadoController::class, 'reportePDF'])->name('admin.empleados.reporte-pdf');
 
+
+    
 
 });
 
@@ -86,6 +97,12 @@ Route::put('/productos/{id}/reducir-stock', [ProductoController::class, 'reducir
 Route::get('/empleado/productos', [ProductoController::class, 'indexempleado'])->name('empleado.productos.index');
 
 });
+
+Route::middleware(['auth'])->group(function () {
+    Route::get('/cambiar-contrasena', [PasswordController::class, 'edit'])->name('password.edit');
+    Route::post('/cambiar-contrasena', [PasswordController::class, 'update'])->name('password.custom-update');
+});
+
 
 
 Route::get('/', function () {
