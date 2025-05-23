@@ -107,7 +107,7 @@
     @if (Request::is('cambiar-contrasena'))
         <!-- Solo en la vista de cambio de contraseña -->
         <a href="{{ $dashboardRoute }}" class="btn btn-success btn-sidebar">Ir al panel</a>
-    @elseif (Request::is('admin/dashboard') || Request::is('gerente/dashboard') || Request::is('empleado/dashboard'))
+    @elseif (Request::is('admin/productos/dashboard') || Request::is('gerente/dashboard') || Request::is('empleado/dashboard'))
         <!-- Solo en el dashboard -->
         <a href="{{ route('password.edit') }}" class="btn btn-primary btn-sidebar">Cambiar contraseña</a>
     @else
